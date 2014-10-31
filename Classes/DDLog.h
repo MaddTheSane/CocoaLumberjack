@@ -625,8 +625,6 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
 @property (readonly) int logContext;
 @property (readonly, copy) NSString *logMessage;
 @property (readonly, copy) NSDate *timestamp;
-@property (readonly) char *file;
-@property (readonly) char *function;
 @property (readonly) int lineNumber;
 @property (readonly) mach_port_t machThreadID;
 @property (readonly) char *queueLabel;

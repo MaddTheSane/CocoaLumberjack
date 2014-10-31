@@ -845,8 +845,6 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy) {
 @synthesize logContext;
 @synthesize logLevel;
 @synthesize logMessage = logMsg;
-@synthesize file;
-@synthesize function;
 @synthesize machThreadID;
 
 static char * dd_str_copy(const char *str) {
