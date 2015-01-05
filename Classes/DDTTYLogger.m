@@ -81,7 +81,7 @@
 @interface DDTTYLoggerColorProfile : NSObject {
     @public
     DDLogFlag mask;
-    int context;
+    NSInteger context;
 
     uint8_t fg_r;
     uint8_t fg_g;
@@ -107,7 +107,7 @@
     size_t resetCodeLen;
 }
 
-- (instancetype)initWithForegroundColor:(DDColor *)fgColor backgroundColor:(DDColor *)bgColor flag:(DDLogFlag)mask context:(int)ctxt;
+- (instancetype)initWithForegroundColor:(DDColor *)fgColor backgroundColor:(DDColor *)bgColor flag:(DDLogFlag)mask context:(NSInteger)ctxt;
 
 @end
 
@@ -693,7 +693,7 @@ static DDTTYLogger *sharedInstance;
         CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
 
         unsigned char pixel[4];
-        CGContextRef context = CGBitmapContextCreate(&pixel, 1, 1, 8, 4, rgbColorSpace, kCGBitmapAlphaInfoMask & kCGImageAlphaNoneSkipLast);
+        CGContextRef context = CGBitmapContextCreate(&pixel, 1, 1, 8, 4, rgbColorSpace, (CGBitmapInfo)(kCGBitmapAlphaInfoMask & kCGImageAlphaNoneSkipLast));
 
         CGContextSetFillColorWithColor(context, [color CGColor]);
         CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
@@ -946,7 +946,7 @@ static DDTTYLogger *sharedInstance;
     [self setForegroundColor:txtColor backgroundColor:bgColor forFlag:mask context:LOG_CONTEXT_ALL];
 }
 
-- (void)setForegroundColor:(DDColor *)txtColor backgroundColor:(DDColor *)bgColor forFlag:(DDLogFlag)mask context:(int)ctxt {
+- (void)setForegroundColor:(DDColor *)txtColor backgroundColor:(DDColor *)bgColor forFlag:(DDLogFlag)mask context:(NSInteger)ctxt {
     dispatch_block_t block = ^{
         @autoreleasepool {
             DDTTYLoggerColorProfile *newColorProfile =
@@ -998,7 +998,7 @@ static DDTTYLogger *sharedInstance;
             DDTTYLoggerColorProfile *newColorProfile =
                 [[DDTTYLoggerColorProfile alloc] initWithForegroundColor:txtColor
                                                          backgroundColor:bgColor
-                                                                    flag:0
+                                                                    flag:(DDLogFlag)0
                                                                  context:0];
 
             NSLogInfo(@"DDTTYLogger: newColorProfile: %@", newColorProfile);
@@ -1026,7 +1026,7 @@ static DDTTYLogger *sharedInstance;
     [self clearColorsForFlag:mask context:0];
 }
 
-- (void)clearColorsForFlag:(DDLogFlag)mask context:(int)context {
+- (void)clearColorsForFlag:(DDLogFlag)mask context:(NSInteger)context {
     dispatch_block_t block = ^{
         @autoreleasepool {
             NSUInteger i = 0;
@@ -1152,12 +1152,12 @@ static DDTTYLogger *sharedInstance;
 }
 
 - (void)logMessage:(DDLogMessage *)logMessage {
-    NSString *logMsg = logMessage->logMsg;
+    NSString *logMsg = logMessage->_message;
     BOOL isFormatted = NO;
 
     if (_logFormatter) {
         logMsg = [_logFormatter formatLogMessage:logMessage];
-        isFormatted = logMsg != logMessage->logMsg;
+        isFormatted = logMsg != logMessage->_message;
     }
 
     if (logMsg) {
@@ -1166,15 +1166,15 @@ static DDTTYLogger *sharedInstance;
         DDTTYLoggerColorProfile *colorProfile = nil;
 
         if (_colorsEnabled) {
-            if (logMessage->tag) {
-                colorProfile = _colorProfilesDict[logMessage->tag];
+            if (logMessage->_tag) {
+                colorProfile = _colorProfilesDict[logMessage->_tag];
             }
 
             if (colorProfile == nil) {
                 for (DDTTYLoggerColorProfile *cp in _colorProfilesArray) {
-                    if (logMessage->logFlag & cp->mask) {
+                    if (logMessage->_flag & cp->mask) {
                         // Color profile set for this context?
-                        if (logMessage->logContext == cp->context) {
+                        if (logMessage->_context == cp->context) {
                             colorProfile = cp;
 
                             // Stop searching
@@ -1262,10 +1262,10 @@ static DDTTYLogger *sharedInstance;
 
             // Calculate timestamp.
             // The technique below is faster than using NSDateFormatter.
-            if (logMessage->timestamp) {
-                NSDateComponents *components = [[NSCalendar autoupdatingCurrentCalendar] components:_calendarUnitFlags fromDate:logMessage->timestamp];
+            if (logMessage->_timestamp) {
+                NSDateComponents *components = [[NSCalendar autoupdatingCurrentCalendar] components:_calendarUnitFlags fromDate:logMessage->_timestamp];
 
-                NSTimeInterval epoch = [logMessage->timestamp timeIntervalSinceReferenceDate];
+                NSTimeInterval epoch = [logMessage->_timestamp timeIntervalSinceReferenceDate];
                 int milliseconds = (int)((epoch - floor(epoch)) * 1000);
 
                 len = snprintf(ts, 24, "%04ld-%02ld-%02ld %02ld:%02ld:%02ld:%03d", // yyyy-MM-dd HH:mm:ss:SSS
@@ -1288,7 +1288,7 @@ static DDTTYLogger *sharedInstance;
             // 8 hex chars for 32 bit, plus ending '\0' = 9
 
             char tid[9];
-            len = snprintf(tid, 9, "%x", logMessage->machThreadID);
+            len = snprintf(tid, 9, "%s", [logMessage->_threadID cStringUsingEncoding:NSUTF8StringEncoding]);
 
             size_t tidLen = (NSUInteger)MAX(MIN(9 - 1, len), 0);
 
@@ -1365,7 +1365,7 @@ static DDTTYLogger *sharedInstance;
 
 @implementation DDTTYLoggerColorProfile
 
-- (instancetype)initWithForegroundColor:(DDColor *)fgColor backgroundColor:(DDColor *)bgColor flag:(DDLogFlag)aMask context:(int)ctxt {
+- (instancetype)initWithForegroundColor:(DDColor *)fgColor backgroundColor:(DDColor *)bgColor flag:(DDLogFlag)aMask context:(NSInteger)ctxt {
     if ((self = [super init])) {
         mask = aMask;
         context = ctxt;
@@ -1469,8 +1469,8 @@ static DDTTYLogger *sharedInstance;
 
 - (NSString *)description {
     return [NSString stringWithFormat:
-            @"<DDTTYLoggerColorProfile: %p mask:%i ctxt:%i fg:%u,%u,%u bg:%u,%u,%u fgCode:%@ bgCode:%@>",
-            self, (int)mask, context, fg_r, fg_g, fg_b, bg_r, bg_g, bg_b, fgCodeRaw, bgCodeRaw];
+            @"<DDTTYLoggerColorProfile: %p mask:%i ctxt:%ld fg:%u,%u,%u bg:%u,%u,%u fgCode:%@ bgCode:%@>",
+            self, (int)mask, (long)context, fg_r, fg_g, fg_b, bg_r, bg_g, bg_b, fgCodeRaw, bgCodeRaw];
 }
 
 @end

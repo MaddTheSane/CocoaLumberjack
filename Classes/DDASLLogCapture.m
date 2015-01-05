@@ -14,6 +14,12 @@
 //   prior written permission of Deusty, LLC.
 
 #import "DDASLLogCapture.h"
+
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
 #import "DDLog.h"
 
 #include <asl.h>
@@ -22,7 +28,7 @@
 #include <sys/time.h>
 
 static BOOL _cancel = YES;
-static DDLogLevel _captureLogLevel = DDLogLevelVerbose;
+static DDLogLevel _captureLevel = DDLogLevelVerbose;
 
 #ifdef __IPHONE_8_0
     #define DDASL_IOS_PIVOT_VERSION __IPHONE_8_0
@@ -75,12 +81,12 @@ static void (*dd_asl_release)(aslresponse obj);
     _cancel = YES;
 }
 
-+ (DDLogLevel)captureLogLevel {
-    return _captureLogLevel;
++ (DDLogLevel)captureLevel {
+    return _captureLevel;
 }
 
-+ (void)setCaptureLogLevel:(DDLogLevel)LOG_LEVEL_XXX {
-    _captureLogLevel = LOG_LEVEL_XXX;
++ (void)setCaptureLevel:(DDLogLevel)level {
+    _captureLevel = level;
 }
 
 #pragma mark - Private methods
@@ -122,30 +128,30 @@ static void (*dd_asl_release)(aslresponse obj);
         // By default all NSLog's with a ASL_LEVEL_WARNING level
         case ASL_LEVEL_EMERG    :
         case ASL_LEVEL_ALERT    :
-        case ASL_LEVEL_CRIT     : flag = DDLogFlagError;    async = LOG_ASYNC_ERROR;    break;
-        case ASL_LEVEL_ERR      : flag = DDLogFlagWarning;  async = LOG_ASYNC_WARN;     break;
-        case ASL_LEVEL_WARNING  : flag = DDLogFlagInfo;     async = LOG_ASYNC_INFO;     break;
-        case ASL_LEVEL_NOTICE   : flag = DDLogFlagDebug;    async = LOG_ASYNC_DEBUG;    break;
+        case ASL_LEVEL_CRIT     : flag = DDLogFlagError;    async = NO;  break;
+        case ASL_LEVEL_ERR      : flag = DDLogFlagWarning;  async = YES; break;
+        case ASL_LEVEL_WARNING  : flag = DDLogFlagInfo;     async = YES; break;
+        case ASL_LEVEL_NOTICE   : flag = DDLogFlagDebug;    async = YES; break;
         case ASL_LEVEL_INFO     :
         case ASL_LEVEL_DEBUG    :
-        default                 : flag = DDLogFlagVerbose;  async = LOG_ASYNC_VERBOSE;  break;
+        default                 : flag = DDLogFlagVerbose;  async = YES;  break;
     }
-
-    if (!(_captureLogLevel & flag)) {
+    
+    if (!(_captureLevel & flag)) {
         return;
     }
-
-    DDLogMessage *logMessage = [[DDLogMessage alloc]initWithLogMsg:message
-                                                             level:_captureLogLevel
-                                                              flag:flag
-                                                           context:0
-                                                              file:"DDASLLogCapture"
-                                                          function:0
-                                                              line:0
-                                                               tag:nil
-                                                           options:0
-                                                         timestamp:timeStamp];
-
+    
+    DDLogMessage *logMessage = [[DDLogMessage alloc]initWithMessage:message
+                                                              level:_captureLevel
+                                                               flag:flag
+                                                            context:0
+                                                               file:@"DDASLLogCapture"
+                                                           function:0
+                                                               line:0
+                                                                tag:nil
+                                                            options:0
+                                                          timestamp:timeStamp];
+    
     [DDLog log:async message:logMessage];
 }
 

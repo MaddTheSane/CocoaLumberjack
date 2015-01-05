@@ -14,6 +14,12 @@
 //   prior written permission of Deusty, LLC.
 
 #import <Foundation/Foundation.h>
+
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
 #import "DDLog.h"
 
 /**
@@ -39,12 +45,12 @@
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
-- (void)addToWhitelist:(int)loggingContext;
-- (void)removeFromWhitelist:(int)loggingContext;
+- (void)addToWhitelist:(NSUInteger)loggingContext;
+- (void)removeFromWhitelist:(NSUInteger)loggingContext;
 
 @property (readonly, copy) NSArray *whitelist;
 
-- (BOOL)isOnWhitelist:(int)loggingContext;
+- (BOOL)isOnWhitelist:(NSUInteger)loggingContext;
 
 @end
 
@@ -59,11 +65,11 @@
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
-- (void)addToBlacklist:(int)loggingContext;
-- (void)removeFromBlacklist:(int)loggingContext;
+- (void)addToBlacklist:(NSUInteger)loggingContext;
+- (void)removeFromBlacklist:(NSUInteger)loggingContext;
 
 @property (readonly, copy) NSArray *blacklist;
 
-- (BOOL)isOnBlacklist:(int)loggingContext;
+- (BOOL)isOnBlacklist:(NSUInteger)loggingContext;
 
 @end

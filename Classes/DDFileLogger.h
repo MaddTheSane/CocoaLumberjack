@@ -13,6 +13,11 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
 #import "DDLog.h"
 
 @class DDLogFileInfo;
@@ -288,6 +293,15 @@ extern unsigned long long const kDDDefaultLogFilesDiskQuota;
 
 // - (id <DDLogFormatter>)logFormatter;
 // - (void)setLogFormatter:(id <DDLogFormatter>)formatter;
+
+/**
+ * Returns the log file that should be used.
+ * If there is an existing log file that is suitable,
+ * within the constraints of maximumFileSize and rollingFrequency, then it is returned.
+ *
+ * Otherwise a new file is created and returned.
+ **/
+- (DDLogFileInfo *)currentLogFileInfo;
 
 @end
 
