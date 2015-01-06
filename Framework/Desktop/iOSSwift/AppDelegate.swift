@@ -13,11 +13,11 @@ import CocoaLumberjackSwift
 let ddloglevel = DDLogLevel.Verbose
 
 private func printSomething() {
-    DDLogVerbose("Verbose");
-    DDLogDebug("Debug");
-    DDLogInfo("Info");
-    DDLogWarn("Warn");
-    DDLogError("Error");
+    DDLogVerbose("Verbose")
+    DDLogDebug("Debug")
+    DDLogInfo("Info")
+    DDLogWarn("Warn")
+    DDLogError("Error")
 }
 
 @UIApplicationMain
@@ -30,11 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DDTTYLogger.sharedInstance().logFormatter = formatter
         DDLog.addLogger(DDTTYLogger.sharedInstance())
         
-        DDLogVerbose("Verbose");
-        DDLogDebug("Debug");
-        DDLogInfo("Info");
-        DDLogWarn("Warn");
-        DDLogError("Error");
+        DDLogVerbose("Verbose")
+        DDLogDebug("Debug")
+        DDLogInfo("Info")
+        DDLogWarn("Warn")
+        DDLogError("Error")
         
         printSomething()
         
