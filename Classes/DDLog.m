@@ -368,13 +368,16 @@ static NSUInteger _numProcessors;
    function:(const char *)function
        line:(NSUInteger)line
         tag:(id)tag {
-    
+	
+    // Because the log message may be called on another thread
+	NSFileManager *fm = [[NSFileManager alloc] init];
+	
     DDLogMessage *logMessage = [[DDLogMessage alloc] initWithMessage:message
                                                                level:level
                                                                 flag:flag
                                                              context:context
-                                                                file:[NSString stringWithFormat:@"%s", file]
-                                                            function:[NSString stringWithFormat:@"%s", function]
+                                                                file:[fm stringWithFileSystemRepresentation:file length:strlen(file)]
+                                                            function:@(function)
                                                                 line:line
                                                                  tag:tag
                                                              options:(DDLogMessageOptions)0
