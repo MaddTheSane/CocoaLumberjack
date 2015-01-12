@@ -435,11 +435,6 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
  * If you write custom loggers or formatters, you will be dealing with objects of this class.
  **/
 
-typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
-    DDLogMessageCopyFile     = 1 << 0,
-    DDLogMessageCopyFunction = 1 << 1
-};
-
 @interface DDLogMessage : NSObject <NSCopying>
 {
     // Direct accessors to be used only for performance
@@ -453,7 +448,6 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
     NSString *_function;
     NSUInteger _line;
     id _tag;
-    DDLogMessageOptions _options;
     NSDate *_timestamp;
     NSString *_threadID;
     NSString *_threadName;
@@ -483,7 +477,6 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
                        function:(NSString *)function
                            line:(NSUInteger)line
                             tag:(id)tag
-                        options:(DDLogMessageOptions)options
                       timestamp:(NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
 
 /**
@@ -498,7 +491,6 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
 @property (readonly, nonatomic) NSString *function;
 @property (readonly, nonatomic) NSUInteger line;
 @property (readonly, nonatomic) id tag;
-@property (readonly, nonatomic) DDLogMessageOptions options;
 @property (readonly, nonatomic) NSDate *timestamp;
 @property (readonly, nonatomic) NSString *threadID; // ID as it appears in NSLog calculated from the machThreadID
 @property (readonly, nonatomic) NSString *threadName;

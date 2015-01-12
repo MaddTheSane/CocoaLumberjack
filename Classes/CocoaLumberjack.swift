@@ -63,7 +63,7 @@ public func SwiftLogMacro(async: Bool, level: DDLogLevel, flag flg: DDLogFlag, c
 
 public func SwiftLogMacro(isAsynchronous: Bool, level: DDLogLevel, flag flg: DDLogFlag, context: Int = 0, file: StaticString = __FILE__, function: StaticString = __FUNCTION__, line: UWord = __LINE__, tag: AnyObject? = nil, timestamp date: NSDate? = nil, #string: @autoclosure () -> String) {
     // Tell the DDLogMessage constructor to copy the C strings that get passed to it.
-	let logMessage = DDLogMessage(message: string(), level: level, flag: flg, context: context, file: file.stringValue, function: function.stringValue, line: UInt(line), tag: tag, options: .CopyFile | .CopyFunction, timestamp: date)
+	let logMessage = DDLogMessage(message: string(), level: level, flag: flg, context: context, file: file.stringValue, function: function.stringValue, line: UInt(line), tag: tag, timestamp: date)
     DDLog.log(isAsynchronous, message: logMessage)
 }
 

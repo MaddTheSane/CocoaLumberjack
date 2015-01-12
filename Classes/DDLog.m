@@ -380,7 +380,6 @@ static NSUInteger _numProcessors;
                                                             function:@(function)
                                                                 line:line
                                                                  tag:tag
-                                                             options:(DDLogMessageOptions)0
                                                            timestamp:nil];
     
     [self queueLogMessage:logMessage asynchronously:asynchronous];
@@ -894,7 +893,6 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy) {
                        function:(NSString *)function
                            line:(NSUInteger)line
                             tag:(id)tag
-                        options:(DDLogMessageOptions)options
                       timestamp:(NSDate *)timestamp {
     if ((self = [super init])) {
         _message      = message;
@@ -905,7 +903,6 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy) {
         _function     = function;
         _line         = line;
         _tag          = tag;
-        _options      = options;
         _timestamp    = timestamp ?: [NSDate new];
         
         _threadID     = [[NSString alloc] initWithFormat:@"%x", pthread_mach_thread_np(pthread_self())];
@@ -947,7 +944,6 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy) {
     newMessage->_function = _function;
     newMessage->_line = _line;
     newMessage->_tag = _tag;
-    newMessage->_options = _options;
     newMessage->_timestamp = _timestamp;
     newMessage->_threadID = _threadID;
     newMessage->_threadName = _threadName;

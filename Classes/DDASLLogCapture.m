@@ -149,7 +149,6 @@ static void (*dd_asl_release)(aslresponse obj);
                                                            function:0
                                                                line:0
                                                                 tag:nil
-                                                            options:0
                                                           timestamp:timeStamp];
     
     [DDLog log:async message:logMessage];
