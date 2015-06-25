@@ -95,13 +95,13 @@ extern unsigned long long const kDDDefaultLogFilesDiskQuota;
 
 - (NSString *)logsDirectory;
 
-- (NSArray *)unsortedLogFilePaths;
-- (NSArray *)unsortedLogFileNames;
-- (NSArray *)unsortedLogFileInfos;
+- (NSArray<NSString*> *)unsortedLogFilePaths;
+- (NSArray<NSString*> *)unsortedLogFileNames;
+- (NSArray<NSString*> *)unsortedLogFileInfos;
 
-- (NSArray *)sortedLogFilePaths;
-- (NSArray *)sortedLogFileNames;
-- (NSArray *)sortedLogFileInfos;
+- (NSArray<NSString*> *)sortedLogFilePaths;
+- (NSArray<NSString*> *)sortedLogFileNames;
+- (NSArray<NSString*> *)sortedLogFileInfos;
 
 // Private methods (only to be used by DDFileLogger)
 

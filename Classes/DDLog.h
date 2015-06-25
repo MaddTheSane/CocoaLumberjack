@@ -271,7 +271,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
 + (void)removeLogger:(id <DDLogger>)logger;
 + (void)removeAllLoggers;
 
-+ (NSArray *)allLoggers;
++ (NSArray<id <DDLogger>> *)allLoggers;
 
 /**
  * Registered Dynamic Logging
@@ -280,8 +280,8 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
  * and also provides methods to get and set their log level during run time.
  **/
 
-+ (NSArray *)registeredClasses;
-+ (NSArray *)registeredClassNames;
++ (NSArray<Class> *)registeredClasses;
++ (NSArray<NSString*> *)registeredClassNames;
 
 + (DDLogLevel)levelForClass:(Class)aClass;
 + (DDLogLevel)levelForClassWithName:(NSString *)aClassName;
@@ -392,7 +392,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@protocol DDRegisteredDynamicLogging
+@protocol DDRegisteredDynamicLogging <NSObject>
 
 /**
  * Implement these methods to allow a file's log level to be managed from a central location.

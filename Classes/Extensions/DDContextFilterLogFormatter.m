@@ -132,7 +132,7 @@
 
 @interface DDLoggingContextSet () {
     OSSpinLock _lock;
-    NSMutableSet *_set;
+    NSMutableSet<NSNumber*> *_set;
 }
 
 @end

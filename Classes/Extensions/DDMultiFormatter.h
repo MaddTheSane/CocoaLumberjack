@@ -32,7 +32,7 @@
 /**
  *  Array of chained formatters
  */
-@property (readonly) NSArray *formatters;
+@property (readonly) NSArray<id<DDLogFormatter>> *formatters;
 
 - (void)addFormatter:(id<DDLogFormatter>)formatter;
 - (void)removeFormatter:(id<DDLogFormatter>)formatter;

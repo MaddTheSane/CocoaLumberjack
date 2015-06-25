@@ -48,7 +48,7 @@
 - (void)addToWhitelist:(NSUInteger)loggingContext;
 - (void)removeFromWhitelist:(NSUInteger)loggingContext;
 
-@property (readonly, copy) NSArray *whitelist;
+@property (readonly, copy) NSArray<NSNumber*> *whitelist;
 
 - (BOOL)isOnWhitelist:(NSUInteger)loggingContext;
 
@@ -68,7 +68,7 @@
 - (void)addToBlacklist:(NSUInteger)loggingContext;
 - (void)removeFromBlacklist:(NSUInteger)loggingContext;
 
-@property (readonly, copy) NSArray *blacklist;
+@property (readonly, copy) NSArray<NSNumber*> *blacklist;
 
 - (BOOL)isOnBlacklist:(NSUInteger)loggingContext;
 
