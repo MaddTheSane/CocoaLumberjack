@@ -48,8 +48,10 @@ extension DDLogFlag {
     }
 }
 
+/// The default debug level used by the Swift functions
 public var defaultDebugLevel = DDLogLevel.Verbose
 
+/// Resets `defaultDebugLevel` to `.Verbose`.
 public func resetDefaultDebugLevel() {
     defaultDebugLevel = DDLogLevel.Verbose
 }
