@@ -32,6 +32,8 @@
 @protocol DDLogger;
 @protocol DDLogFormatter;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  * Define the standard options.
  *
@@ -164,7 +166,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
        file:(const char *)file
    function:(const char *)function
        line:(NSUInteger)line
-        tag:(id)tag
+        tag:(nullable id)tag
      format:(NSString *)format, ... NS_FORMAT_FUNCTION(9,10);
 
 /**
@@ -180,7 +182,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
        file:(const char *)file
    function:(const char *)function
        line:(NSUInteger)line
-        tag:(id)tag
+        tag:(nullable id)tag
      format:(NSString *)format
        args:(va_list)argList;
 
@@ -195,7 +197,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
        file:(const char *)file
    function:(const char *)function
        line:(NSUInteger)line
-        tag:(id)tag;
+        tag:(nullable id)tag;
 
 /**
  * Logging Primitive.
@@ -479,11 +481,11 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
                            flag:(DDLogFlag)flag
                         context:(NSInteger)context
                            file:(NSString *)file
-                       function:(NSString *)function
+                       function:(nullable NSString *)function
                            line:(NSUInteger)line
-                            tag:(id)tag
+                            tag:(nullable id)tag
                         options:(DDLogMessageOptions)options
-                      timestamp:(NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
+                      timestamp:(nullable NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
 
 /**
  * Read-only properties
@@ -543,3 +545,4 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
 
 @end
 
+NS_ASSUME_NONNULL_END

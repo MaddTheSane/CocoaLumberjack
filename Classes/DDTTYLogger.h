@@ -43,19 +43,21 @@
     typedef UIColor DDColor;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
-    static  DDColor* DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
+    static  DDColor* __nonnull DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
 #pragma clang diagnostic pop
 #elif __has_include(<AppKit/NSColor.h>)
     // OS X with AppKit
     #import <AppKit/NSColor.h>
     typedef NSColor DDColor;
-    static DDColor* DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
+    static DDColor* __nonnull DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
 #else
     // OS X CLI
     #import "CLIColor.h"
     typedef CLIColor DDColor;
-    static  DDColor* DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
+    static  DDColor* __nonnull DDMakeColor(CGFloat r, CGFloat g, CGFloat b) {return [DDColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0f];}
 #endif
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface DDTTYLogger : DDAbstractLogger <DDLogger>
 
@@ -123,7 +125,7 @@
  *
  * This method invokes setForegroundColor:backgroundColor:forFlag:context: and applies it to `LOG_CONTEXT_ALL`.
  **/
-- (void)setForegroundColor:(DDColor *)txtColor backgroundColor:(DDColor *)bgColor forFlag:(DDLogFlag)mask;
+- (void)setForegroundColor:(nullable DDColor *)txtColor backgroundColor:(nullable DDColor *)bgColor forFlag:(DDLogFlag)mask;
 
 /**
  * Just like setForegroundColor:backgroundColor:flag, but allows you to specify a particular logging context.
@@ -136,7 +138,7 @@
  * Logging context's are explained in further detail here:
  * Documentation/CustomContext.md
  **/
-- (void)setForegroundColor:(DDColor *)txtColor backgroundColor:(DDColor *)bgColor forFlag:(DDLogFlag)mask context:(NSInteger)ctxt;
+- (void)setForegroundColor:(nullable DDColor *)txtColor backgroundColor:(nullable DDColor *)bgColor forFlag:(DDLogFlag)mask context:(NSInteger)ctxt;
 
 /**
  * Similar to the methods above, but allows you to map DDLogMessage->tag to a particular color profile.
@@ -161,7 +163,7 @@
  *
  * DDLogPurple(@"I'm a purple log message!");
  **/
-- (void)setForegroundColor:(DDColor *)txtColor backgroundColor:(DDColor *)bgColor forTag:(id <NSCopying>)tag;
+- (void)setForegroundColor:(nullable DDColor *)txtColor backgroundColor:(nullable DDColor *)bgColor forTag:(id <NSCopying>)tag;
 
 /**
  * Clearing color profiles.
@@ -174,3 +176,5 @@
 - (void)clearAllColors;
 
 @end
+
+NS_ASSUME_NONNULL_END
