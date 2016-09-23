@@ -33,4 +33,9 @@ framework module CocoaLumberjack {
 		header "DDAbstractDatabaseLogger.h"
 		export *
 	}
+	
+	explicit module DDOSLogLogger {
+		header "DDOSLogLogger.h"
+		export *
+	}
 }
