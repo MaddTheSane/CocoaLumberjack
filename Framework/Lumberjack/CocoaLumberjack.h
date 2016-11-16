@@ -37,3 +37,8 @@ FOUNDATION_EXPORT const unsigned char CocoaLumberjackVersionString[];
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDFileLogger.h>
+
+// CLI
+#if defined(DD_CLI) || !__has_include(<AppKit/NSColor.h>)
+#import <CocoaLumberjack/CLIColor.h>
+#endif

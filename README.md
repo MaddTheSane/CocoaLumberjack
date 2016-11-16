@@ -10,6 +10,7 @@ CocoaLumberjack
 [![Pod Platform](http://img.shields.io/cocoapods/p/CocoaLumberjack.svg?style=flat)](http://cocoadocs.org/docsets/CocoaLumberjack/)
 [![Pod License](http://img.shields.io/cocoapods/l/CocoaLumberjack.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)
 [![Reference Status](https://www.versioneye.com/objective-c/cocoalumberjack/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/cocoalumberjack/references)
+[![codecov](https://codecov.io/gh/CocoaLumberjack/CocoaLumberjack/branch/master/graph/badge.svg)](https://codecov.io/gh/CocoaLumberjack/CocoaLumberjack)
 
 **CocoaLumberjack** is a fast & simple, yet powerful & flexible logging framework for Mac and iOS.
 
@@ -33,13 +34,13 @@ import CocoaLumberjack
 ```
 
 ```swift
-DDLog.addLogger(DDTTYLogger.sharedInstance()) // TTY = Xcode console
-DDLog.addLogger(DDASLLogger.sharedInstance()) // ASL = Apple System Logs
+DDLog.add(DDTTYLogger.sharedInstance()) // TTY = Xcode console
+DDLog.add(DDASLLogger.sharedInstance()) // ASL = Apple System Logs
 
 let fileLogger: DDFileLogger = DDFileLogger() // File Logger
-fileLogger.rollingFrequency = 60*60*24  // 24 hours
+fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
 fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-DDLog.addLogger(fileLogger)
+DDLog.add(fileLogger)
 
 ...
 
