@@ -23,10 +23,39 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * This class provides a logger for Sierra's new \c os_log functionality.
+ *
+ * This maps the \c DDLogFlag values to \c os_log_type_t and passes them to 
+ * <code>os_log</code>.
+ *
+ * The mapping is as follows:
+ * \code
+ * DDLogFlagError = OS_LOG_TYPE_FAULT
+ * DDLogFlagWarning = OS_LOG_TYPE_ERROR
+ * DDLogFlagInfo = OS_LOG_TYPE_DEFAULT
+ * DDLogFlagDebug = OS_LOG_TYPE_DEBUG
+ * DDLogFlagVerbose = OS_LOG_TYPE_INFO
+ * \endcode
+ *
+ * Special formatting available to \c os_log is not preserved.
+ **/
 NS_AVAILABLE(10_12, 10_0)
 @interface DDOSLogLogger : DDAbstractLogger
 
+/**
+ * Creates a new log with \c OS_LOG_DEFAULT as the target.
+ *
+ * Will return \c nil if on an OS version that does not support \c os_log
+ */
 - (instancetype)init;
+
+/**
+ * Creates a new log using the specified subsystem and category. See the documentation
+ * for \c os_log for more info.
+ *
+ * Will return \c nil if on an OS version that does not support \c os_log
+ */
 - (instancetype)initWithSubsystem:(NSString*)subsystem category:(NSString*)category;
 
 @end
