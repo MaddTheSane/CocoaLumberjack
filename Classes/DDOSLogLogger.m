@@ -39,33 +39,21 @@ static BOOL supportedOS(void)
 - (void)logMessage:(DDLogMessage *)logMessage
 {
     NSString *our = logMessage.message;
-    if (self.logFormatter) {
-        our = [self.logFormatter formatLogMessage:logMessage];
+    if (self->_logFormatter) {
+        our = [self->_logFormatter formatLogMessage:logMessage];
     }
+    DDLogFlag flag = logMessage.flag;
     os_log_type_t nativeLogType = OS_LOG_TYPE_DEFAULT;
-    switch (logMessage.level) {
-        case DDLogLevelError:
-            nativeLogType = OS_LOG_TYPE_FAULT;
-            break;
-            
-        case DDLogLevelWarning:
-            nativeLogType = OS_LOG_TYPE_DEBUG;
-            break;
-            
-        case DDLogLevelInfo:
-            nativeLogType = OS_LOG_TYPE_DEFAULT;
-            break;
-            
-        case DDLogLevelDebug:
-            nativeLogType = OS_LOG_TYPE_DEBUG;
-            break;
-            
-        case DDLogLevelVerbose:
-            nativeLogType = OS_LOG_TYPE_INFO;
-            break;
-            
-        default:
-            break;
+    if (flag & DDLogFlagError) {
+        nativeLogType = OS_LOG_TYPE_FAULT;
+    } else if (flag & DDLogFlagWarning) {
+        nativeLogType = OS_LOG_TYPE_ERROR;
+    } else if (flag & DDLogFlagInfo) {
+        nativeLogType = OS_LOG_TYPE_DEFAULT;
+    } else if (flag & DDLogFlagDebug) {
+        nativeLogType = OS_LOG_TYPE_DEBUG;
+    } else if (flag & DDLogFlagVerbose) {
+        nativeLogType = OS_LOG_TYPE_INFO;
     }
     os_log_with_type(nativeLog, nativeLogType, "%@", our);
 }
