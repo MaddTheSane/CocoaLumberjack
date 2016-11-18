@@ -40,13 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * Special formatting available to \c os_log is not preserved.
  **/
-NS_AVAILABLE(10_12, 10_0)
+__API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0))
 @interface DDOSLogLogger : DDAbstractLogger
 
 /**
  * Creates a new log with \c OS_LOG_DEFAULT as the target.
  *
- * Will return \c nil if on an OS version that does not support \c os_log
+ * Will return \c nil if the OS does not support \c os_log
  */
 - (instancetype)init;
 
@@ -54,7 +54,7 @@ NS_AVAILABLE(10_12, 10_0)
  * Creates a new log using the specified subsystem and category. See the documentation
  * for \c os_log for more info.
  *
- * Will return \c nil if on an OS version that does not support \c os_log
+ * Will return \c nil if the OS does not support \c os_log
  */
 - (instancetype)initWithSubsystem:(NSString*)subsystem category:(NSString*)category;
 
